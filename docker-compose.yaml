@@ -11,9 +11,7 @@ services:
     expose:
       - 3306
   backend:
-    build:
-      context: ../CD3_Backend
-      dockerfile: Dockerfile
+    image: tranxuanduc/cd3-backend:latest
     restart: unless-stopped
     environment:
       - DB_PORT=3306
@@ -24,9 +22,7 @@ services:
     expose:
       - 3000
   nginx:
-    build:
-      context: ../CD3_Frontend
-      dockerfile: Dockerfile
+    image: tranxuanduc/cd3-frontend:latest
     ports:
       - 5173:80
     depends_on:

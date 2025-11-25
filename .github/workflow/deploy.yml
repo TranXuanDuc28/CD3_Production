@@ -1,0 +1,21 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:  # chạy thủ công hoặc trigger từ repo backend/frontend
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: 22
+          script: |
+            cd /home/tranduc/CD3_Production
+            git pull origin main
+            docker-compose pull
+            docker-compose up -d
