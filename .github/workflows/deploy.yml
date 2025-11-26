@@ -27,5 +27,5 @@ jobs:
             echo "Pulling latest image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest
             echo "Restarting service..."
-            docker-compose up -d ${{ github.event.inputs.service }}
+            docker-compose up -d --force-recreate ${{ github.event.inputs.service }}
             echo "Deployment completed."
