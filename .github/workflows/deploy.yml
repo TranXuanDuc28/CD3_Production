@@ -17,7 +17,6 @@ jobs:
       - name: Show inputs
         run: |
           echo "Deploying service: ${{ github.event.inputs.service }}"
-          echo "Image tag: ${{ github.event.inputs.image_tag }}"
 
       - name: SSH to server and deploy
         uses: appleboy/ssh-action@master
@@ -29,8 +28,7 @@ jobs:
           script: |
             cd /home/tranduc/CD3_Production
             echo "Pulling latest image..."
-            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:${{ github.event.inputs.image_tag }}
-            docker tag ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:${{ github.event.inputs.image_tag }} ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest}
             echo "Restarting service..."
             docker-compose up -d ${{ github.event.inputs.service }}
             echo "Deployment completed."
