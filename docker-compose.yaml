@@ -22,7 +22,7 @@ services:
     expose:
       - 3000
   nginx:
-    image: tranxuanduc/cd3-frontend:latest
+    image: tranxuanduc/cd3-nginx:latest
     ports:
       - 5173:80
     depends_on:
