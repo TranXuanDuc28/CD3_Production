@@ -1,16 +1,25 @@
-name: Deploy Production
+name: Production Deploy
 
 on:
-  inputs:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: "Docker image tag to deploy"
+        required: true
       service:
-        description: 'Service to deploy (backend/frontend)'
+        description: "Service to deploy (backend/frontend)"
         required: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy via SSH
+      - name: Show inputs
+        run: |
+          echo "Deploying service: ${{ github.event.inputs.service }}"
+          echo "Image tag: ${{ github.event.inputs.image_tag }}"
+
+      - name: SSH to server and deploy
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST }}
@@ -19,9 +28,9 @@ jobs:
           port: 22
           script: |
             cd /home/tranduc/CD3_Production
-            # Pull latest images
-            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-backend:latest
-            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-frontend:latest
-            # Restart containers
-            docker-compose up -d
-            echo "Deployed ${{ github.event.inputs.service }} successfully!"
+            echo "Pulling latest image..."
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:${{ github.event.inputs.image_tag }}
+            docker tag ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:${{ github.event.inputs.image_tag }} ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest
+            echo "Restarting service..."
+            docker-compose up -d ${{ github.event.inputs.service }}
+            echo "Deployment completed."
