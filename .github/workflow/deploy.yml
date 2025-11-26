@@ -1,7 +1,10 @@
 name: Deploy Production
 
 on:
-  workflow_dispatch:  # chạy thủ công hoặc trigger từ repo backend/frontend
+  inputs:
+      service:
+        description: 'Service to deploy (backend/frontend)'
+        required: true
 
 jobs:
   deploy:
@@ -16,6 +19,9 @@ jobs:
           port: 22
           script: |
             cd /home/tranduc/CD3_Production
-            git pull origin main
-            docker-compose pull
+            # Pull latest images
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-backend:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-frontend:latest
+            # Restart containers
             docker-compose up -d
+            echo "Deployed ${{ github.event.inputs.service }} successfully!"
