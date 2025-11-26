@@ -25,7 +25,7 @@ jobs:
           script: |
             cd /home/tranduc/CD3_Production
             echo "Pulling latest image..."
-            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest}
+            docker pull ${{ secrets.DOCKER_USERNAME }}/cd3-${{ github.event.inputs.service }}:latest
             echo "Restarting service..."
             docker-compose up -d ${{ github.event.inputs.service }}
             echo "Deployment completed."
