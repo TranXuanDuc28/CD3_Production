@@ -3,9 +3,6 @@ name: Production Deploy
 on:
   workflow_dispatch:
     inputs:
-      image_tag:
-        description: "Docker image tag to deploy"
-        required: true
       service:
         description: "Service to deploy (backend/frontend)"
         required: true
