@@ -13,6 +13,8 @@ services:
   backend:
     image: tranxuanduc/cd3-backend:latest
     restart: unless-stopped
+    env_file:
+      - ./backend/.env
     environment:
       - DB_PORT=3306
       - DB_HOST=db-mysql
@@ -23,6 +25,8 @@ services:
       - 3000
   nginx:
     image: tranxuanduc/cd3-nginx:latest
+    env_file:
+      - ./nginx/.env
     ports:
       - 5173:80
     depends_on:
