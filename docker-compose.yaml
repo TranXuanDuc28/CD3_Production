@@ -18,7 +18,7 @@ services:
     environment:
       - DB_PORT=3306
       - DB_HOST=db-mysql
-      - CLIENT_URL=http://nginx
+      - CLIENT_URL=https://web.nhom8.id.vn
     ports:
       - 3000:3000
     expose:
